@@ -1,0 +1,30 @@
+{
+    "classworks": [
+        {
+            "id": 1,
+            "subject": "Python Programming",
+            "task": "Complete exercise 3 questions in notebook",
+            "date": "Oct 26, 2026"
+        }
+    ],
+    "classroomSessions": [
+        {
+            "id": 1,
+            "subject": "Python Programming",
+            "topic": "Lists & Dictionaries",
+            "fileName": "Python_Basics.pdf",
+            "filePath": "/uploads/sample.pdf",
+            "date": "Oct 26, 2026"
+        }
+    ],
+    "announcements": [
+        {
+            "id": 1,
+            "title": "Exam Alert",
+            "text": "Mid-term timetable released.",
+            "lastDate": "2026-11-05",
+            "date": "Oct 26"
+        }
+    ],
+    "customLinks": []
+}

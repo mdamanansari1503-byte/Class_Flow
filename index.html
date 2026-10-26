@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassFlow - Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex shrink-0">
+        <div>
+            <!-- Brand Logo -->
+            <div class="p-5 flex items-center gap-3 border-b border-slate-800">
+                <div class="bg-indigo-600 text-white p-2 rounded-lg flex items-center justify-center w-9 h-9 font-bold text-lg">
+                    C
+                </div>
+                <div>
+                    <h1 class="font-bold text-white text-lg leading-tight">ClassFlow</h1>
+                    <p class="text-[11px] text-slate-400">Student Portal</p>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="p-4 space-y-1 text-sm font-medium">
+                <button onclick="switchTab('home')" id="nav-home" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600 text-white shadow-sm transition">
+                    <i class="fa-solid fa-house w-5"></i> Home
+                </button>
+                <button onclick="switchTab('classroom')" id="nav-classroom" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-chalkboard-user w-5"></i> Classroom
+                </button>
+                <button onclick="switchTab('notes')" id="nav-notes" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-folder-open w-5"></i> Notes
+                </button>
+                <button onclick="switchTab('announcements')" id="nav-announcements" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-bullhorn w-5"></i> Announcements
+                </button>
+                <button onclick="switchTab('links')" id="nav-links" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-800 hover:text-white transition">
+                    <i class="fa-solid fa-link w-5"></i> Other Links
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Info Watermark -->
+        <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span>Created by <strong class="text-indigo-400 font-semibold">MD Aman</strong></span>
+            <i class="fa-solid fa-code text-slate-500"></i>
+        </div>
+    </aside>
+
+    <!-- Main Content Container -->
+    <div class="flex-1 flex flex-col h-screen overflow-y-auto">
+
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-3.5 flex justify-between items-center shadow-sm">
+            <h2 id="pageTitle" class="text-lg font-bold text-slate-800">Home Dashboard</h2>
+            <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200" id="currentDateDisplay">Date</span>
+        </header>
+
+        <!-- Dynamic Sections -->
+        <main class="p-6 max-w-5xl w-full mx-auto space-y-6">
+
+            <!-- 1. HOME SECTION -->
+            <section id="section-home" class="space-y-6 tab-section">
+                <!-- Classwork Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-book text-indigo-600"></i> Classwork & Homework
+                        </h3>
+                        <button onclick="openClassworkModal()" class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 shadow transition" title="Add Classwork">
+                            <i class="fa-solid fa-plus text-sm"></i>
+                        </button>
+                    </div>
+                    <div id="homeClassworkList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- My To-Do Task Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-emerald-600"></i> My To-Do Task
+                    </h3>
+                    <div class="flex gap-2 mb-3">
+                        <input type="text" id="personalTaskInput" placeholder="Add your personal task..." class="w-full text-xs p-2.5 border rounded-lg border-slate-300 focus:outline-none focus:border-indigo-500">
+                        <button id="addPersonalTaskBtn" class="bg-slate-800 text-white text-xs px-4 py-2.5 rounded-lg font-semibold hover:bg-slate-900 transition shrink-0">Add</button>
+                    </div>
+                    <div id="personalTaskList" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CLASSROOM SECTION -->
+            <section id="section-classroom" class="space-y-6 tab-section hidden">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> Add Classroom Session
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Subject Name</label>
+                                    <button onclick="addNewSubjectPrompt()" class="text-[11px] text-indigo-600 font-bold hover:underline">+ Add New</button>
+                                </div>
+                                <select id="classSubject" class="w-full text-xs p-2.5 border rounded-lg border-slate-300 bg-white focus:outline-none focus:border-indigo-500">
+                                    <option value="Python Programming">Python Programming</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="General Science">General Science</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Topic Covered</label>
+                                <input type="text" id="classTopic" placeholder="e.g. Functions & Loops" class="w-full text-xs p-2.5 border rounded-lg border-slate-300 focus:outline-none focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Upload Class Note / PDF</label>
+                            <input type="file" id="classNoteFile" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        </div>
+                        <button id="saveClassroomBtn" class="bg-indigo-600 text-white text-xs font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 shadow-sm transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Save & Send to Notes Vault
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base mb-4">Today's Recorded Sessions</h3>
+                    <div id="classroomLogsList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. NOTES SECTION -->
+            <section id="section-notes" class="space-y-6 tab-section hidden">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-folder-tree text-indigo-600"></i> Subject Notes Vault
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Click on any subject folder below to expand and view topic history & notes.</p>
+                    
+                    <div id="notesVaultContainer" class="space-y-3">
+                        <!-- Accordion subject folders rendered here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ANNOUNCEMENTS SECTION -->
+            <section id="section-announcements" class="space-y-6 tab-section hidden">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-amber-500"></i> Official Announcements
+                        </h3>
+                        <button onclick="openAnnounceModal()" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1.5 rounded border border-indigo-200 hover:bg-indigo-100 transition">
+                            + Add Notice
+                        </button>
+                    </div>
+                    <div id="announcementsList" class="space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. OTHER LINKS SECTION -->
+            <section id="section-links" class="space-y-6 tab-section hidden">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-link text-indigo-600"></i> Useful External Links
+                        </h3>
+                        <button onclick="openLinkModal()" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1.5 rounded border border-indigo-200 hover:bg-indigo-100 transition">
+                            + Add Link
+                        </button>
+                    </div>
+                    <div id="externalLinksList" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Links rendered here -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for Home Classwork -->
+    <div id="classworkModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full space-y-4 shadow-xl">
+            <h3 class="font-bold text-slate-800 text-base">Add Classwork / Homework</h3>
+            <input type="text" id="modalSubject" placeholder="Subject (e.g. Python)" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            <input type="text" id="modalTask" placeholder="Homework details" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeClassworkModal()" class="px-3 py-1.5 text-xs bg-slate-200 text-slate-700 rounded font-semibold">Cancel</button>
+                <button onclick="submitClassworkModal()" class="px-3 py-1.5 text-xs bg-indigo-600 text-white rounded font-semibold">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Announcement -->
+    <div id="announceModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full space-y-4 shadow-xl">
+            <h3 class="font-bold text-slate-800 text-base">Add New Announcement</h3>
+            <div>
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Notice Tag</label>
+                <input type="text" id="announceTag" placeholder="e.g. Exam Alert, Event" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            </div>
+            <div>
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Announcement Details</label>
+                <textarea id="announceText" placeholder="Enter details..." rows="3" class="w-full text-xs p-2.5 border rounded border-slate-300"></textarea>
+            </div>
+            <div>
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 block">Last Date / Deadline</label>
+                <input type="date" id="announceDate" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAnnounceModal()" class="px-3 py-1.5 text-xs bg-slate-200 text-slate-700 rounded font-semibold">Cancel</button>
+                <button onclick="submitAnnounceModal()" class="px-3 py-1.5 text-xs bg-indigo-600 text-white rounded font-semibold">Post Notice</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for External Links -->
+    <div id="linkModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full space-y-4 shadow-xl">
+            <h3 class="font-bold text-slate-800 text-base">Add External Link</h3>
+            <input type="text" id="linkName" placeholder="Link Title" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            <input type="url" id="linkUrl" placeholder="URL (e.g. https://example.com)" class="w-full text-xs p-2.5 border rounded border-slate-300">
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeLinkModal()" class="px-3 py-1.5 text-xs bg-slate-200 text-slate-700 rounded font-semibold">Cancel</button>
+                <button onclick="submitLinkModal()" class="px-3 py-1.5 text-xs bg-indigo-600 text-white rounded font-semibold">Save Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
